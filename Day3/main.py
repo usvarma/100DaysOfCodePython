@@ -1,36 +1,39 @@
 intro_msg = "Welcome to Treasure Island."
 mission_msg = "Your mission is to find the treasure."
 
-crossroad_msg = 'You have reached a cross road. Where do you want to go? Type "left" or "right".'
+crossroad_msg = 'You have reached a cross road. Where do you want to go? Type "left" or "right".\n'
 fell_into_hole_msg = "You fell into a hole. Game over!!!"
-reached_river_msg = 'You have reached a river. What do you want to do? Type "swim" or "wait".'
-trout_attack_msg = "A trout attacked you. Game over!!!"
-intro_door_msg = "Three doors blue, red and a yellow colored ones have appeared in front of you."
-select_door_msg = 'Which door do you choose? Type "blue", "red" or "yellow".'
+reached_river_msg = 'You have reached a lake. There is an island in the middle of the lake.\n'\
+                    'Type "wait" to wait for a boat. Type "swim" to swim across. \n'
+trout_attack_msg = "An angry trout attacked you. Game over!!!"
+intro_island_msg = "You arrive at the island unharmed. There is a house with three doors."
+intro_door_msg = "One blue, a red and a yellow colored one."
+select_door_msg = 'Which door do you choose? Type "blue", "red" or "yellow".\n'
 
 door_colors = ["blue", "red", "yellow"]
 winner_msg = "You win!"
 invalid_door_msg = "Invalid door color selected. Game over!!!"
 door_select_result_msg_blue = "You are eaten by beasts of the sea. Game over!!!"
-door_select_result_msg_red = "You are burned by fire! Game over!!!"
+door_select_result_msg_red = "It's a room full of fire. You are burned by fire! Game over!!!"
 door_select_result_msg_yellow = winner_msg
 
 
 def treasure_island_game():
-    user_choice = input(crossroad_msg)
+    user_choice = input(crossroad_msg).lower()
 
     if user_choice != "left":
         print(fell_into_hole_msg)
         return
     else:
-        user_choice = input(reached_river_msg)
+        user_choice = input(reached_river_msg).lower()
 
     if user_choice != "wait":
         print(trout_attack_msg)
         return
     else:
+        print(intro_island_msg)
         print(intro_door_msg)
-        user_choice = input(select_door_msg)
+        user_choice = input(select_door_msg).lower()
 
     if user_choice not in door_colors:
         print(invalid_door_msg)
