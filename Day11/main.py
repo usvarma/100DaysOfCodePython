@@ -20,7 +20,7 @@ def calculate_score(deck):
     return sum(deck)
 
 
-def is_over_threshold(users_deck, computers_deck):
+def is_game_over(users_deck, computers_deck):
     user_score = calculate_score(users_deck)
     computer_score = calculate_score(computers_deck)
 
@@ -53,79 +53,74 @@ def find_winner(users_deck, computers_deck):
     user_score = calculate_score(users_deck)
     computer_score = calculate_score(computers_deck)
 
-    if user_score > game_threshold:
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("You went over! Computer wins :D")
-        return False
-
-    elif computer_score > game_threshold:
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("Computer went over! You win :D")
-        return False
-    elif user_score > computer_score:
+    if user_score > computer_score:
         print(f"Your final hand is {users_deck}, final score: {user_score}")
         print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
         print("You win :D")
-        return False
+        return True
     elif computer_score > user_score:
         print(f"Your final hand is {users_deck}, final score: {user_score}")
         print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
         print("Computer wins :D")
-        return False
+        return True
     else:
         print(f"Your final hand is {users_deck}, final score: {user_score}")
         print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
         print("It\'s a draw :D")
-        return False
+        return True
 
 
-def play_blackjack():
+def play_game():
     print(logo)
-    continue_playing = True
+    user_deck = []
+    computer_deck = []
 
-    while continue_playing:
-        user_choice = input("Do you want to play blackjack? Type 'y' or 'n': \n").lower()
-        user_deck = []
-        computer_deck = []
+    # Deal two cards for both computer and player initially
+    user_deck.append(deal_cards())
+    computer_deck.append(deal_cards())
+    user_deck.append(deal_cards())
+    computer_deck.append(deal_cards())
 
-        if user_choice == 'y':
-            user_deck.append(deal_cards())
-            computer_deck.append(deal_cards())
-            user_deck.append(deal_cards())
-            computer_deck.append(deal_cards())
-        else:
-            return
+    # Continue the game dealing cards
+    continue_game = True
+    while continue_game:
 
+        # Calculate and print scores
         user_score = calculate_score(user_deck)
         computer_score = calculate_score(computer_deck)
         print(f"Your cards are {user_deck}, current score: {user_score}")
         print(f"Computer\'s first card: {computer_deck[0]}")
 
-        continue_game = True
-        while continue_game:
+        # Check if game is over, either due to player score being 21(BlackJack) or due to going over limit
+        if is_game_over(user_deck, computer_deck):
+            return
+        else:
             user_choice = input("Type 'y' to get another card or type 'n' to pass: \n").lower()
             if user_choice == 'y':
                 user_deck.append(deal_cards())
-                game_completed = is_over_threshold(user_deck, computer_deck)
-                if game_completed:
-                    break
-                if not game_completed:
-                    computer_deck.append(deal_cards())
-                    user_score = calculate_score(user_deck)
-                    computer_score = calculate_score(computer_deck)
-                    print(f"Your cards are {user_deck}, current score: {user_score}")
-                    print(f"Computer\'s first card: {computer_deck[0]}")
-                    continue
+                continue
             elif user_choice == 'n':
-                game_completed = is_over_threshold(user_deck, computer_deck)
+                game_completed = is_game_over(user_deck, computer_deck)
                 if game_completed:
-                    break
+                    return
                 while computer_score < 17:
                     computer_deck.append(deal_cards())
                     computer_score = calculate_score(computer_deck)
-                continue_game = find_winner(user_deck, computer_deck)
+        if is_game_over(user_deck, computer_deck):
+            return
+        find_winner(user_deck, computer_deck)
+        return
+
+
+def play_blackjack():
+    continue_playing = True
+
+    while continue_playing:
+        user_choice = input("Do you want to play blackjack? Type 'y' or 'n': \n").lower()
+        if user_choice == 'y':
+            play_game()
+        else:
+            continue_playing = False
 
 
 if __name__ == '__main__':
