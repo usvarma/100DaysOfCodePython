@@ -11,6 +11,9 @@ def deal_cards():
 
 def calculate_score(deck):
     ace = 11
+    sum_deck = sum(deck)
+    if len(deck) == 2 and sum_deck == 21:
+        return 'BlackJack'
     if ace in deck and sum(deck) > 21:
         deck.remove(ace)
         deck.append(1)
@@ -21,7 +24,17 @@ def is_over_threshold(users_deck, computers_deck):
     user_score = calculate_score(users_deck)
     computer_score = calculate_score(computers_deck)
 
-    if user_score > game_threshold:
+    if user_score == 'BlackJack':
+        print(f"Your final hand is {users_deck}, final score: {user_score}")
+        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
+        print("You win with a BlackJack")
+        return True
+    elif computer_score == 'BlackJack':
+        print(f"Your final hand is {users_deck}, final score: {user_score}")
+        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
+        print("Computer wins with a BlackJack")
+        return True
+    elif user_score > game_threshold:
         print(f"Your final hand is {users_deck}, final score: {user_score}")
         print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
         print("You went over! Computer wins :D")
@@ -106,6 +119,9 @@ def play_blackjack():
                     print(f"Computer\'s first card: {computer_deck[0]}")
                     continue
             elif user_choice == 'n':
+                game_completed = is_over_threshold(user_deck, computer_deck)
+                if game_completed:
+                    break
                 while computer_score < 17:
                     computer_deck.append(deal_cards())
                     computer_score = calculate_score(computer_deck)
