@@ -20,30 +20,28 @@ def calculate_score(deck):
     return sum(deck)
 
 
+def print_scores_decks(users_deck, computers_deck, user_score, computer_score):
+    print(f"Your final hand is {users_deck}, final score: {user_score}")
+    print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
+
+
 def is_game_over(users_deck, computers_deck):
     user_score = calculate_score(users_deck)
     computer_score = calculate_score(computers_deck)
+    win_msg = ''
 
     if user_score == 'BlackJack':
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("You win with a BlackJack")
-        return True
+        win_msg = "You win with a BlackJack"
     elif computer_score == 'BlackJack':
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("Computer wins with a BlackJack")
-        return True
+        win_msg = "Computer wins with a BlackJack"
     elif user_score > game_threshold:
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("You went over! Computer wins :D")
-        return True
-
+        win_msg = "You went over! Computer wins :D"
     elif computer_score > game_threshold:
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("Computer went over! You win :D")
+        win_msg = "Computer went over! You win :D"
+
+    if win_msg != '':
+        print_scores_decks(users_deck, computers_deck, user_score, computer_score)
+        print(win_msg)
         return True
 
     return False
@@ -52,22 +50,21 @@ def is_game_over(users_deck, computers_deck):
 def find_winner(users_deck, computers_deck):
     user_score = calculate_score(users_deck)
     computer_score = calculate_score(computers_deck)
+    win_msg = ''
 
     if user_score > computer_score:
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("You win :D")
-        return True
+        win_msg = "You win :D"
     elif computer_score > user_score:
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("Computer wins :D")
-        return True
+        win_msg = "Computer wins :D"
     else:
-        print(f"Your final hand is {users_deck}, final score: {user_score}")
-        print(f"Computer's final hand is {computers_deck}, final score: {computer_score}")
-        print("It\'s a draw :D")
+        win_msg = "It\'s a draw :D"
+
+    if win_msg != '':
+        print_scores_decks(users_deck, computers_deck, user_score, computer_score)
+        print(win_msg)
         return True
+
+    return False
 
 
 def play_game():
